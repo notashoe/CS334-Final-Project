@@ -30,8 +30,12 @@ def main():
     Kweight = 'uniform'
 
     #LRpenalty = 'none'
-    LRpenalty = 'l2'
-    LRc = 7
+    LRpenalty = 'none'
+    LRc = 1
+
+    maxFeat = 7
+    maxDepth = 9
+    minSamplesLeaf = 2
 
 
     kf = KFold(n_splits=ksplits, shuffle = True)
@@ -68,7 +72,7 @@ def main():
         # print(currSeasonX[["player_name"]].iloc[yHatLog.nonzero()])
 
 
-        clf = RandomForestClassifier(max_depth=7, max_features = 7, min_samples_leaf = 2, random_state=0) #,bootstrap = False
+        clf = RandomForestClassifier(max_depth=maxDepth, max_features = maxFeat, min_samples_leaf = minSamplesLeaf, random_state=0) #,bootstrap = False
         clf.fit(xTrain[['pts','reb','net_rating','oreb_pct','dreb_pct','usg_pct','ts_pct','ast_pct','gp_pct','win_pct']], yTrain)
         yHatRF = clf.predict(xTest[['pts','reb','net_rating','oreb_pct','dreb_pct','usg_pct','ts_pct','ast_pct','gp_pct','win_pct']])
         RFacc += accuracy_score(yTest, yHatRF)
@@ -127,7 +131,7 @@ def main():
     print("\n")
 
 
-    clf = RandomForestClassifier(max_depth=7, max_features = 7, min_samples_leaf = 2, random_state=0) #,bootstrap = False
+    clf = RandomForestClassifier(max_depth=maxDepth, max_features = maxFeat, min_samples_leaf = minSamplesLeaf, random_state=0) #,bootstrap = False
     clf.fit(pastSeasonsX[['pts','reb','net_rating','oreb_pct','dreb_pct','usg_pct','ts_pct','ast_pct','gp_pct','win_pct']], pastSeasonsY)
     yHatRF = clf.predict(currSeasonX[['pts','reb','net_rating','oreb_pct','dreb_pct','usg_pct','ts_pct','ast_pct','gp_pct','win_pct']])
     print("random forest: ")
